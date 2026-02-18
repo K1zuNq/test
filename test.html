@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>学力テスト</title>
+
+<style>
+body{
+font-family:sans-serif;
+background:#f0f0f0;
+padding:20px;
+}
+
+.box{
+background:white;
+padding:20px;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+h2{
+background:#ddd;
+padding:10px;
+border-radius:5px;
+}
+
+input, textarea{
+width:100%;
+padding:8px;
+margin-top:5px;
+margin-bottom:15px;
+font-size:16px;
+}
+
+button{
+width:100%;
+padding:15px;
+font-size:18px;
+background:#4CAF50;
+color:white;
+border:none;
+border-radius:5px;
+}
+
+#timer{
+font-size:24px;
+color:red;
+font-weight:bold;
+margin-bottom:20px;
+}
+</style>
+
+</head>
+
+<body oncopy="return false" onpaste="return false" oncontextmenu="return false">
+
+<h1>学力テスト</h1>
+
+<div id="timer">残り 30:00</div>
+
+<div class="box">
+
+名前：
+<input id="name">
+
+</div>
+
+<div class="box">
+
+<h2>国語（20点）</h2>
+
+1. コンキを漢字で書け<br>
+<input id="q1">
+
+2. ガイネンを漢字で書け<br>
+<input id="q2">
+
+3. 雰囲気の読みを書け<br>
+<input id="q3">
+
+4. ことわざ「猿も木から落ちる」の意味を書け<br>
+<textarea id="q4"></textarea>
+
+</div>
+
+<div class="box">
+
+<h2>数学（20点）</h2>
+
+5. 12² − 5² =<br>
+<input id="q5">
+
+6. x+3=10 のとき x=<br>
+<input id="q6">
+
+7. 円周率を小数第2位まで<br>
+<input id="q7">
+
+8. 1/2 + 1/3 =<br>
+<input id="q8">
+
+</div>
+
+<div class="box">
+
+<h2>英語（20点）</h2>
+
+9. apple の意味<br>
+<input id="q9">
+
+10. 「私は学生です」を英語で書け<br>
+<input id="q10">
+
+11. go の過去形<br>
+<input id="q11">
+
+12. 「美しい」を英語で<br>
+<input id="q12">
+
+</div>
+
+<div class="box">
+
+<h2>理科（20点）</h2>
+
+13. 水の化学式<br>
+<input id="q13">
+
+14. 地球は何惑星か<br>
+<input id="q14">
+
+15. 光の速さは秒速約何kmか（数字のみ）<br>
+<input id="q15">
+
+16. 重力を発見した人物<br>
+<input id="q16">
+
+</div>
+
+<div class="box">
+
+<h2>社会（20点）</h2>
+
+17. 日本の首都<br>
+<input id="q17">
+
+18. 織田信長の次に天下統一した人物<br>
+<input id="q18">
+
+19. 日本の通貨単位<br>
+<input id="q19">
+
+20. 一番大きい大陸<br>
+<input id="q20">
+
+</div>
+
+<button onclick="submitTest()">提出</button>
+
+<script>
+
+// コピペ禁止強化
+document.addEventListener("keydown", function(e){
+
+if(e.ctrlKey && (e.key==="c" || e.key==="v")){
+e.preventDefault();
+}
+
+});
+
+
+// タイマー
+
+let time=1800;
+
+setInterval(function(){
+
+let m=Math.floor(time/60);
+let s=time%60;
+
+if(s<10)s="0"+s;
+
+document.getElementById("timer").innerText=
+"残り "+m+":"+s;
+
+time--;
+
+if(time<0){
+submitTest();
+}
+
+},1000);
+
+
+// 提出処理
+
+async function submitTest(){
+
+const data={
+
+name:document.getElementById("name").value,
+
+answers:[
+q1.value,q2.value,q3.value,q4.value,
+q5.value,q6.value,q7.value,q8.value,
+q9.value,q10.value,q11.value,q12.value,
+q13.value,q14.value,q15.value,q16.value,
+q17.value,q18.value,q19.value,q20.value
+].join(","),
+
+time:document.getElementById("timer").innerText
+
+};
+
+
+// ↓ここにApps Script URL
+await fetch("ここにURL",{
+
+method:"POST",
+
+body:JSON.stringify(data)
+
+});
+
+alert("提出完了");
+
+}
+
+</script>
+
+</body>
+</html>
