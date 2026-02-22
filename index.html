@@ -1,210 +1,204 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>5教科総合テスト</title>
+<title>学力テスト</title>
 
 <style>
-body{font-family:sans-serif;padding:20px;line-height:1.6;}
-input{width:100%;margin-bottom:10px;}
-button{padding:10px 20px;font-size:16px;}
-h2{margin-top:40px;border-bottom:2px solid #000;}
-.question{margin-bottom:15px;}
+body{
+    font-family:sans-serif;
+    margin:20px;
+    line-height:1.6;
+    user-select:none;
+}
+h1{text-align:center;}
+.section{margin-top:40px;}
+textarea{width:100%;height:70px;}
+input[type="text"]{width:100%;}
+.warning{color:red;font-weight:bold;}
+input,textarea{user-select:text;}
+button{
+    padding:12px 24px;
+    font-size:18px;
+    background:#4CAF50;
+    color:white;
+    border:none;
+    border-radius:6px;
+}
+#timer{
+    font-size:22px;
+    font-weight:bold;
+    color:red;
+    text-align:center;
+    margin-bottom:10px;
+}
 </style>
 
 <script>
-document.addEventListener("DOMContentLoaded",()=>{
-  sessionStorage.setItem("startTime",new Date().getTime());
-  document.addEventListener("copy",e=>e.preventDefault());
-  document.addEventListener("paste",e=>e.preventDefault());
-  document.addEventListener("contextmenu",e=>e.preventDefault());
+// ===== コピペ対策 =====
+document.addEventListener("copy", e => e.preventDefault());
+document.addEventListener("paste", e => e.preventDefault());
+document.addEventListener("cut", e => e.preventDefault());
+document.addEventListener("contextmenu", e => e.preventDefault());
+document.addEventListener("selectstart", e => e.preventDefault());
+document.addEventListener("keydown", function(e){
+    if(e.ctrlKey || e.metaKey){
+        if(["c","v","x","u","s","a","p"].includes(e.key.toLowerCase())){
+            e.preventDefault();
+        }
+    }
+    if(e.key==="F12"){ e.preventDefault(); }
 });
 
+// ===== 画面離脱警告 =====
+document.addEventListener("visibilitychange", function(){
+    if(document.hidden){
+        alert("画面を離れました。不正の可能性があります。");
+    }
+});
+
+// ===== タイマー（30分）=====
+let totalTime = 1800;
+let startTime;
+
+function countdown(){
+    let min = Math.floor(totalTime/60);
+    let sec = totalTime%60;
+    document.getElementById("timer").textContent =
+        "残り時間: " + min + "分 " + sec + "秒";
+    totalTime--;
+    if(totalTime >= 0){
+        setTimeout(countdown,1000);
+    } else {
+        alert("時間終了");
+        document.body.innerHTML="<h1>試験終了</h1>";
+    }
+}
+
+window.onload = function(){
+    startTime = new Date().getTime();
+    countdown();
+};
+
+// ===== 提出処理 =====
 async function submitTest(){
 
-  const start = sessionStorage.getItem("startTime");
-  const end = new Date().getTime();
-  const elapsed = Math.floor((end-start)/1000);
+    const endTime = new Date().getTime();
+    const elapsed = Math.floor((endTime - startTime)/1000);
 
-  const payload = {
-    name: name.value,
+    const payload = {
+        name: document.getElementById("name").value,
+        answers: [
+            q1.value,q2.value,q3.value,q4.value,q5.value,
+            q6.value,q7.value,q8.value,q9.value,q10.value,
+            q11.value,q12.value,q13.value,q14.value,q15.value,
+            q16.value,q17.value,q18.value,q19.value,q20.value,
+            q21.value,q22.value,q23.value,q24.value,q25.value,
+            q26.value,q27.value,q28.value,q29.value,q30.value,
+            q31.value,q32.value,q33.value,q34.value,q35.value,
+            q36.value,q37.value,q38.value,q39.value,q40.value,
+            q41.value,q42.value,q43.value,q44.value,q45.value,
+            q46.value,q47.value,q48.value,q49.value,q50.value
+        ].join(" / "),
+        time: elapsed + "秒"
+    };
 
-    kokugo:
-      k1.value+" / "+
-      k2.value+" / "+
-      k3.value+" / "+
-      k4.value,
+    await fetch("https://script.google.com/macros/s/AKfycbza6LieKzkRhYYY06fK3qSpDdmBZlah-2B3VKj3TmiFE6m7bWI5_YPPsp8BmxPPWqlc3A/exec",{
+        method:"POST",
+        body:JSON.stringify(payload)
+    });
 
-    sugaku:
-      s1.value+" / "+
-      s2.value+" / "+
-      s3.value+" / "+
-      s4.value+" / "+
-      s5.value,
-
-    eigo:
-      e1.value+" / "+
-      e2.value+" / "+
-      e3.value+" / "+
-      e4.value,
-
-    rika:
-      r1.value+" / "+
-      r2.value+" / "+
-      r3.value+" / "+
-      r4.value,
-
-    shakai:
-      sh1.value+" / "+
-      sh2.value+" / "+
-      sh3.value+" / "+
-      sh4.value,
-
-    time: elapsed + "秒"
-  };
-
-  await fetch("https://script.google.com/macros/s/AKfycbza6LieKzkRhYYY06fK3qSpDdmBZlah-2B3VKj3TmiFE6m7bWI5_YPPsp8BmxPPWqlc3A/exec",{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json"
-    },
-    body:JSON.stringify(payload)
-  });
-
-  alert("提出完了");
+    alert("提出完了！スプレッドシートに保存されました。");
 }
 </script>
-</head>
 
+</head>
 <body>
 
-<h1>5教科総合テスト（中高レベル）</h1>
+<h1>学力テスト</h1>
+<p id="timer"></p>
+<p class="warning">制限時間30分 / コピペ禁止 / 不正検知あり</p>
 
-名前：
-<input type="text" id="name" required>
+<p>名前（必須）</p>
+<input type="text" id="name">
 
 <!-- 国語 -->
-<h2>■ 国語</h2>
-
-<div class="question">
-① 「対比」の効果を40字以内で説明せよ。
-<input type="text" id="k1">
-</div>
-
-<div class="question">
-② 「風に揺れる桜が川面に映っていた。」の主語を書け。
-<input type="text" id="k2">
-</div>
-
-<div class="question">
-③ 「顕著」の意味を説明せよ。
-<input type="text" id="k3">
-</div>
-
-<div class="question">
-④ 「石の上にも三年」を使って例文を作れ。
-<input type="text" id="k4">
+<div class="section">
+<h2>【国語】20点</h2>
+<p>① 「相対」の意味を説明せよ。</p><textarea id="q1"></textarea>
+<p>② 「彼は静かに本を読んでいた。」の主語を書け。</p><input id="q2" type="text">
+<p>③ 「具体」の対義語を書け。</p><input id="q3" type="text">
+<p>④ 「努力を惜しまない」の意味を説明せよ。</p><textarea id="q4"></textarea>
+<p>⑤ 「静かだ」の品詞を答えよ。</p><input id="q5" type="text">
+<p>⑥ 「彼の声は雷のようだった。」の比喩の種類を答えよ。</p><input id="q6" type="text">
+<p>⑦ 「臨機応変」の意味を書け。</p><textarea id="q7"></textarea>
+<p>⑧ 「先生が言いました」を尊敬語に直せ。</p><textarea id="q8"></textarea>
+<p>⑨ 適切な接続詞を入れよ：「雨が降っている。＿＿＿、試合は続行された。」</p><input id="q9" type="text">
+<p>⑩ 「石の上にも三年」を使って例文を書け。</p><textarea id="q10"></textarea>
 </div>
 
 <!-- 数学 -->
-<h2>■ 数学</h2>
-
-<div class="question">
-① 2x + 3 = 11 を解け。
-<input type="text" id="s1">
-</div>
-
-<div class="question">
-② x² - 5x + 6 = 0 を解け。
-<input type="text" id="s2">
-</div>
-
-<div class="question">
-③ y = -2x² の頂点を答えよ。
-<input type="text" id="s3">
-</div>
-
-<div class="question">
-④ √18 を簡単にせよ。
-<input type="text" id="s4">
-</div>
-
-<div class="question">
-⑤ 半径5cmの円の面積を求めよ。（π=3.14）
-<input type="text" id="s5">
+<div class="section">
+<h2>【数学】20点</h2>
+<p>① 5×12</p><input id="q11" type="text">
+<p>② 15−9</p><input id="q12" type="text">
+<p>③ 4x+7=23 を解け。</p><input id="q13" type="text">
+<p>④ (x+4)(x-2) を展開せよ。</p><input id="q14" type="text">
+<p>⑤ √72 を簡単にせよ。</p><input id="q15" type="text">
+<p>⑥ y=x²-4 の頂点を答えよ。</p><input id="q16" type="text">
+<p>⑦ サイコロで3の倍数が出る確率。</p><input id="q17" type="text">
+<p>⑧ x+y=7, x-y=1 を解け。</p><input id="q18" type="text">
+<p>⑨ 半径4cmの円の面積（π=3.14）</p><input id="q19" type="text">
+<p>⑩ 質量5kg、力20Nの加速度。</p><input id="q20" type="text">
 </div>
 
 <!-- 英語 -->
-<h2>■ 英語</h2>
-
-<div class="question">
-① She wrote this letter. を受動態にせよ。
-<input type="text" id="e1">
-</div>
-
-<div class="question">
-② 私は昨日図書館で勉強していた。を英訳せよ。
-<input type="text" id="e2">
-</div>
-
-<div class="question">
-③ If I ( ) rich, I would travel the world.
-<input type="text" id="e3">
-</div>
-
-<div class="question">
-④ The problem is too difficult for me to solve. を和訳せよ。
-<input type="text" id="e4">
+<div class="section">
+<h2>【英語】20点</h2>
+<p>① difficult の意味。</p><input id="q21" type="text">
+<p>② (a)quick (b)slow (c)happy 反対語を選べ（quickの反対）</p><input id="q22" type="text">
+<p>③ He play soccer. を正しく直せ。</p><input id="q23" type="text">
+<p>④ I have lived here (since / for) five years.</p><input id="q24" type="text">
+<p>⑤ 並び替え： ( to / I / want / doctor / be / a )</p><input id="q25" type="text">
+<p>⑥ 和訳：This book is interesting.</p><textarea id="q26"></textarea>
+<p>⑦ 「私は明日東京へ行く。」を英訳せよ。</p><input id="q27" type="text">
+<p>⑧ They built this bridge. を受動態にせよ。</p><input id="q28" type="text">
+<p>⑨ 「彼は私より背が高い。」を英訳せよ。</p><input id="q29" type="text">
+<p>⑩ 和訳：She has just finished her homework.</p><textarea id="q30"></textarea>
 </div>
 
 <!-- 理科 -->
-<h2>■ 理科</h2>
-
-<div class="question">
-① 光合成の化学反応式を書け。
-<input type="text" id="r1">
-</div>
-
-<div class="question">
-② オームの法則を式で書け。
-<input type="text" id="r2">
-</div>
-
-<div class="question">
-③ P波とS波の違いを説明せよ。
-<input type="text" id="r3">
-</div>
-
-<div class="question">
-④ 原子番号とは何か説明せよ。
-<input type="text" id="r4">
+<div class="section">
+<h2>【理科】20点</h2>
+<p>① 光合成に必要な気体。</p><input id="q31" type="text">
+<p>② 血液中で酸素を運ぶ成分。</p><input id="q32" type="text">
+<p>③ 二酸化炭素の化学式。</p><input id="q33" type="text">
+<p>④ 酸性水溶液の性質を1つ。</p><input id="q34" type="text">
+<p>⑤ 力の単位。</p><input id="q35" type="text">
+<p>⑥ 速さの公式。</p><input id="q36" type="text">
+<p>⑦ 最初に到達する地震波。</p><input id="q37" type="text">
+<p>⑧ 月が満ち欠けする理由。</p><textarea id="q38"></textarea>
+<p>⑨ 加速度の求め方。</p><input id="q39" type="text">
+<p>⑩ 金属が電気を通す理由。</p><textarea id="q40"></textarea>
 </div>
 
 <!-- 社会 -->
-<h2>■ 社会</h2>
-
-<div class="question">
-① 日本国憲法第9条の内容を説明せよ。
-<input type="text" id="sh1">
-</div>
-
-<div class="question">
-② 日清戦争の原因を説明せよ。
-<input type="text" id="sh2">
-</div>
-
-<div class="question">
-③ GDPとは何か説明せよ。
-<input type="text" id="sh3">
-</div>
-
-<div class="question">
-④ EUの目的を説明せよ。
-<input type="text" id="sh4">
+<div class="section">
+<h2>【社会】20点</h2>
+<p>① 太平洋ベルトが発達した理由。</p><textarea id="q41"></textarea>
+<p>② 日本の気候に地域差が生じる理由。</p><textarea id="q42"></textarea>
+<p>③ EEZとは何か。</p><input id="q43" type="text">
+<p>④ 鎌倉幕府が成立した年。</p><input id="q44" type="text">
+<p>⑤ 明治維新で起きた政治の変化。</p><textarea id="q45"></textarea>
+<p>⑥ 鎖国の目的。</p><textarea id="q46"></textarea>
+<p>⑦ 日本国憲法第9条の内容。</p><textarea id="q47"></textarea>
+<p>⑧ 衆議院の優越が認められる理由。</p><textarea id="q48"></textarea>
+<p>⑨ 三権分立の3つ。</p><input id="q49" type="text">
+<p>⑩ 少子高齢化が社会に与える影響。</p><textarea id="q50"></textarea>
 </div>
 
 <br><br>
-<button onclick="submitTest()">提出する</button>
+<button onclick="submitTest()">提出</button>
 
 </body>
 </html>
