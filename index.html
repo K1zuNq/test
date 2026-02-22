@@ -80,42 +80,25 @@ window.onload = function(){
     countdown();
 };
 
-// ===== 提出処理 =====
+// ===== 提出処理（修正版）=====
 async function submitTest(){
-
     const endTime = new Date().getTime();
     const elapsed = Math.floor((endTime - startTime)/1000);
 
+    // 50問分の値を取得
+    const answers = [];
+    for(let i=1;i<=50;i++){
+        const el = document.getElementById("q"+i);
+        answers.push(el ? el.value : "");
+    }
+
     const payload = {
         name: document.getElementById("name").value,
-        answers: [
-            q1.value,q2.value,q3.value,q4.value,q5.value,
-            q6.value,q7.value,q8.value,q9.value,q10.value,
-            q11.value,q12.value,q13.value,q14.value,q15.value,
-            q16.value,q17.value,q18.value,q19.value,q20.value,
-            q21.value,q22.value,q23.value,q24.value,q25.value,
-            q26.value,q27.value,q28.value,q29.value,q30.value,
-            q31.value,q32.value,q33.value,q34.value,q35.value,
-            q36.value,q37.value,q38.value,q39.value,q40.value,
-            q41.value,q42.value,q43.value,q44.value,q45.value,
-            q46.value,q47.value,q48.value,q49.value,q50.value
-        ].join(" / "),
+        answers: answers.join(" / "),
         time: elapsed + "秒"
     };
 
-async function submitTest(){
-
-    const endTime = new Date().getTime();
-    const elapsed = Math.floor((endTime - startTime)/1000);
-
-    const payload = {
-        name: document.getElementById("name").value,
-        time: elapsed + "秒",
-        answers: "テスト"
-    };
-
     try{
-
         const response = await fetch("https://script.google.com/macros/s/AKfycbza6LieKzkRhYYY06fK3qSpDdmBZlah-2B3VKj3TmiFE6m7bWI5_YPPsp8BmxPPWqlc3A/exec",{
             method:"POST",
             headers: {
@@ -131,7 +114,6 @@ async function submitTest(){
         alert("送信エラー：" + error);
         console.error(error);
     }
-}
 }
 </script>
 
@@ -181,7 +163,7 @@ async function submitTest(){
 <p>① difficult の意味。</p><input id="q21" type="text">
 <p>② (a)quick (b)slow (c)happy 反対語を選べ（quickの反対）</p><input id="q22" type="text">
 <p>③ He play soccer. を正しく直せ。</p><input id="q23" type="text">
-<p>④ I have lived here (since / for) five years.</p><input id="q24" type="text">
+<p>④ I have lived here (since / for) five years。</p><input id="q24" type="text">
 <p>⑤ 並び替え： ( to / I / want / doctor / be / a )</p><input id="q25" type="text">
 <p>⑥ 和訳：This book is interesting.</p><textarea id="q26"></textarea>
 <p>⑦ 「私は明日東京へ行く。」を英訳せよ。</p><input id="q27" type="text">
@@ -225,5 +207,3 @@ async function submitTest(){
 
 </body>
 </html>
-
-
