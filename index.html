@@ -65,6 +65,9 @@ async function submitTest(){
 
   await fetch("https://script.google.com/macros/s/AKfycbza6LieKzkRhYYY06fK3qSpDdmBZlah-2B3VKj3TmiFE6m7bWI5_YPPsp8BmxPPWqlc3A/exec",{
     method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
     body:JSON.stringify(payload)
   });
 
@@ -84,22 +87,22 @@ async function submitTest(){
 <h2>■ 国語</h2>
 
 <div class="question">
-① 「対比」の効果を40字以内で説明せよ。  
+① 「対比」の効果を40字以内で説明せよ。
 <input type="text" id="k1">
 </div>
 
 <div class="question">
-② 「風に揺れる桜が川面に映っていた。」の主語を書け。  
+② 「風に揺れる桜が川面に映っていた。」の主語を書け。
 <input type="text" id="k2">
 </div>
 
 <div class="question">
-③ 「顕著」の意味を説明せよ。  
+③ 「顕著」の意味を説明せよ。
 <input type="text" id="k3">
 </div>
 
 <div class="question">
-④ 「石の上にも三年」を使って例文を作れ。  
+④ 「石の上にも三年」を使って例文を作れ。
 <input type="text" id="k4">
 </div>
 
@@ -107,27 +110,27 @@ async function submitTest(){
 <h2>■ 数学</h2>
 
 <div class="question">
-① 2x + 3 = 11 を解け。  
+① 2x + 3 = 11 を解け。
 <input type="text" id="s1">
 </div>
 
 <div class="question">
-② x² - 5x + 6 = 0 を解け。  
+② x² - 5x + 6 = 0 を解け。
 <input type="text" id="s2">
 </div>
 
 <div class="question">
-③ y = -2x² の頂点を答えよ。  
+③ y = -2x² の頂点を答えよ。
 <input type="text" id="s3">
 </div>
 
 <div class="question">
-④ √18 を簡単にせよ。  
+④ √18 を簡単にせよ。
 <input type="text" id="s4">
 </div>
 
 <div class="question">
-⑤ 半径5cmの円の面積（π=3.14）  
+⑤ 半径5cmの円の面積を求めよ。（π=3.14）
 <input type="text" id="s5">
 </div>
 
@@ -135,22 +138,22 @@ async function submitTest(){
 <h2>■ 英語</h2>
 
 <div class="question">
-① She wrote this letter. を受動態にせよ。  
+① She wrote this letter. を受動態にせよ。
 <input type="text" id="e1">
 </div>
 
 <div class="question">
-② 私は昨日図書館で勉強していた。を英訳せよ。  
+② 私は昨日図書館で勉強していた。を英訳せよ。
 <input type="text" id="e2">
 </div>
 
 <div class="question">
-③ If I ( ) rich, I would travel the world.  
+③ If I ( ) rich, I would travel the world.
 <input type="text" id="e3">
 </div>
 
 <div class="question">
-④ The problem is too difficult for me to solve. を和訳せよ。  
+④ The problem is too difficult for me to solve. を和訳せよ。
 <input type="text" id="e4">
 </div>
 
@@ -158,22 +161,22 @@ async function submitTest(){
 <h2>■ 理科</h2>
 
 <div class="question">
-① 光合成の化学反応式を書け。  
+① 光合成の化学反応式を書け。
 <input type="text" id="r1">
 </div>
 
 <div class="question">
-② オームの法則を式で書け。  
+② オームの法則を式で書け。
 <input type="text" id="r2">
 </div>
 
 <div class="question">
-③ P波とS波の違いを説明せよ。  
+③ P波とS波の違いを説明せよ。
 <input type="text" id="r3">
 </div>
 
 <div class="question">
-④ 原子番号とは何か説明せよ。  
+④ 原子番号とは何か説明せよ。
 <input type="text" id="r4">
 </div>
 
@@ -181,22 +184,22 @@ async function submitTest(){
 <h2>■ 社会</h2>
 
 <div class="question">
-① 憲法9条の内容を説明せよ。  
+① 日本国憲法第9条の内容を説明せよ。
 <input type="text" id="sh1">
 </div>
 
 <div class="question">
-② 日清戦争の原因を説明せよ。  
+② 日清戦争の原因を説明せよ。
 <input type="text" id="sh2">
 </div>
 
 <div class="question">
-③ GDPとは何か説明せよ。  
+③ GDPとは何か説明せよ。
 <input type="text" id="sh3">
 </div>
 
 <div class="question">
-④ EUの目的を説明せよ。  
+④ EUの目的を説明せよ。
 <input type="text" id="sh4">
 </div>
 
